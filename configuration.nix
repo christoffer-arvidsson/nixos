@@ -16,6 +16,9 @@
   boot.loader.grub.device = "nodev";
   boot.loader.grub.efiSupport = true;
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
   networking.hostName = "shuttle";
   networking.networkmanager.enable = true;
 
@@ -40,6 +43,8 @@
     xkb = {
       layout = "us";
     }; 
+    autoRepeatDelay = 250;
+    autoRepeatInterval = 30;
     windowManager.bspwm.enable = true;
   };
   # HiDPI
@@ -63,6 +68,8 @@
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
+  services.blueman.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.eethern = {
     isNormalUser = true;
@@ -78,8 +85,12 @@
   environment.systemPackages = with pkgs; [
     vim 
     neovim
-    fennel
+    fennel 
+    lua
+    luajit
+    python3
 
+    acpi
     alacritty
     tmux
     git
@@ -89,17 +100,24 @@
     sqlite
 
     polybar
+    zscroll
     rofi
     sxhkd
 
     qutebrowser
     firefox
 
+    bash
     fish
-    fzf
     fishPlugins.fzf-fish
+    fzf
     starship
+    ranger
     zoxide
+    ripgrep
+    fd
+    killall
+    jq
   ];
 
   # fish
@@ -123,8 +141,6 @@
       tmuxPlugins.yank
       tmuxPlugins.rose-pine
     ];
-    
-    
   };
 
   programs.git = {
@@ -161,11 +177,13 @@
     enableDefaultPackages = true; 
     packages = with pkgs; [       
       iosevka                     
+      font-awesome
+      material-icons
       (nerdfonts.override { fonts  = [ "Iosevka" ]; })
     ];                            
     fontconfig = {
       defaultFonts = {
-        monospace = [ "Iosevka" ];
+        monospace = [ "Iosevka Nerd Font Mono" ];
       };
     };
   };
